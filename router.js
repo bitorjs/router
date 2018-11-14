@@ -63,7 +63,7 @@ class Router {
     var layer = new Layer(path, {
       sensitive: this.caseSensitive,
       strict: false,
-      end: false,
+      end: true,
       ...opts,
     }, fn);
 
@@ -72,7 +72,7 @@ class Router {
     return this;
   }
 
-  match(path, method='GET') {
+  match(path, method = 'GET') {
     let matched = [];
     let stack = this.stack;
     for (let ind = 0; ind < stack.length; ind++) {
