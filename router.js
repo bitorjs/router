@@ -19,7 +19,7 @@ class Router {
     this.methods = {
       get: "GET",
       post: "POST",
-      del: "DELETE",
+      delete: "DELETE",
       put: "PUT",
       head: "HEAD",
       patch: "PATCH"
@@ -52,19 +52,19 @@ class Router {
     });
   }
 
-  register(path, method, opts, fn) {
+  register(path, opts, fn) {
     opts = opts || {};
+    let method = opts.method ? opts.method.toLowerCase() : 'get';
 
-    // if (this.methods.indexOf(method) === -1) {
-    //   throw new Error('not support the method', method);
-    // }
+    if (!(method in this.methods)) {
+      throw new Error('not support the method', method);
+    }
     // create route
     var layer = new Layer(path, {
       sensitive: this.caseSensitive,
       strict: false,
       end: false,
-      method: method.toLowerCase(),
-      ...opts
+      ...opts,
     }, fn);
 
     this.stack.push(layer);
@@ -72,7 +72,7 @@ class Router {
     return this;
   }
 
-  match(path, method) {
+  match(path, method='GET') {
     let matched = [];
     let stack = this.stack;
     for (let ind = 0; ind < stack.length; ind++) {
@@ -81,11 +81,6 @@ class Router {
         matched.push(layer)
       }
     }
-
-    // metched.forEach(layer => {
-    //   layer.handle()
-    // });
-
     return matched;
   }
 }
