@@ -68,6 +68,10 @@ class Router {
     }, fn);
 
     this.stack.push(layer);
+    // 
+    this.stack.sort((a, b) => {
+      return b.regexp.toString().length - a.regexp.toString().length;
+    })
 
     return this;
   }
