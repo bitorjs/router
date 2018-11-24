@@ -12,7 +12,7 @@ class Router {
 
     this.supportMethods()
     this.normalize()
-    this.registerMeshod()
+    this.registerMethod()
   }
 
   supportMethods() {
@@ -42,7 +42,7 @@ class Router {
     }
   }
 
-  registerMeshod() {
+  registerMethod() {
     let methods = Object.keys(this.methods);
     let router = this;
     methods.forEach(method => {
@@ -61,7 +61,7 @@ class Router {
     }
     // create route
     var layer = new Layer(path, {
-      sensitive: this.caseSensitive,
+      sensitive: true,
       strict: false,
       end: true,
       ...opts,

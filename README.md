@@ -16,10 +16,10 @@ keys 要在路径中找到的键填充的数组.
   partial 表示此令牌是部分路径段（boolean）
   patternRegExp 用于匹配此令牌（string）
 options
-  sensitive 当正true则表达式区分大小写. (default: false)
-  strict 当truer egexp允许可选的尾随分隔符匹配. (default: false)
-  end 当正true 则表达式匹配字符串的结尾. (default: true)
-  start 当正true 则表达式从字符串的开头匹配. (default: true)
+  sensitive 当true 则表达式区分大小写. (default: false) e.g. /one or /One
+  strict 当true 严格要求尾随分隔符匹配. (default: false) e.g. /event or /event/
+  end 当true 则强制从字符串的结尾匹配. (default: true) 
+  start 当true 则强制从字符串的开头匹配. (default: true)
   高级选项（用于非路径名字符串，例如主机名）:
     delimiter 默认分隔符. (default: '/')
     endsWith 可选字符或字符列表，用作“结束”字符.

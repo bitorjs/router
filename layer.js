@@ -27,8 +27,9 @@ class Layer {
 
     let opts = options || {}
     this.name = options.name || fn.name || 'path-to-regexp-layer';
-    this.method = options.method || undefined;
+    this.method = options.method && options.method.toLowerCase() || 'get';
     this.regexp = pathRegExp(path, this.keys = [], opts);
+    this.origin = path;
     this.path = undefined;
     this.params = undefined;
     this.handle = fn;
