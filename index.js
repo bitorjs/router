@@ -4,6 +4,29 @@ import Layer from './layer';
 var slice = Array.prototype.slice;
 var toString = Object.prototype.toString;
 
+function pathWeigth(path) {
+  const arr = path.split('/');
+  let ret = 0;
+  for (let i = 0; i < arr.length; i++) {
+    const item = arr[i];
+    let base = 100 / Math.pow(10, i)
+
+    if (item === '*') {
+      base *= 1;
+    } else {
+      let ind = item.indexOf(':');
+      if (ind > -1) {
+        base *= 0.9;
+        base *= Math.pow(0.9, ind);
+      } else {
+        base *= 0.1;
+      }
+    }
+    ret += base;
+  }
+  return ret;
+}
+
 class Router {
 
   constructor() {
@@ -67,11 +90,32 @@ class Router {
       ...opts,
     }, fn);
 
-    this.stack.push(layer);
-    // 
-    this.stack.sort((a, b) => {
-      return b.regexp.toString().length - a.regexp.toString().length;
-    })
+
+
+
+    // 插入后简单排序
+    // this.stack.push(layer);
+    // this.stack.sort((a, b) => {
+    //   return b.regexp.toString().length - a.regexp.toString().length;
+    // })
+
+    // 排覆盖排序插入
+    let stack = this.stack;
+    if (stack.length === 0) {
+      stack.push(layer);
+    } else {
+      let len = stack.length;
+      for (let k = 0; k < len; k++) {
+        const item = stack[k];
+        if (pathWeigth(layer.origin) <= pathWeigth(item.origin)) {
+          stack.splice(k, 0, layer);
+          break;
+        } else if (k == (len - 1)) {
+          stack.push(layer);
+        }
+      }
+    }
+
 
     return this;
   }
