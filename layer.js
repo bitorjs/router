@@ -1,4 +1,4 @@
-import pathRegExp from 'path-to-regexp';
+const pathRegExp = require('path-to-regexp');
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -19,25 +19,28 @@ function decode_param(val) {
   }
 }
 
-class Layer {
-  constructor(path, options, fn) {
-    if (!(this instanceof Layer)) {
-      return new Layer(path, options, fn)
-    }
-
-    let opts = options || {}
-    this.name = options.name || fn.name || 'path-to-regexp-layer';
-    this.method = options.method && options.method.toLowerCase() || 'get';
-    this.regexp = pathRegExp(path, this.keys = [], opts);
-    this.origin = path;
-    this.path = undefined;
-    this.params = undefined;
-    this.handle = fn;
-
-    // set fast path flags
-    this.regexp.fast_star = path === '*'
-    this.regexp.fast_slash = path === '/' && opts.end === false
+function Layer(path, options, fn) {
+  if (!(this instanceof Layer)) {
+    return new Layer(path, options, fn)
   }
+
+  let opts = options || {}
+  this.name = options.name || fn.name || 'path-to-regexp-layer';
+  this.method = options.method && options.method.toLowerCase() || 'get';
+  this.regexp = pathRegExp(path, this.keys = [], opts);
+  this.origin = path;
+  this.path = undefined;
+  this.params = undefined;
+  this.handle = fn;
+
+  // set fast path flags
+  this.regexp.fast_star = path === '*'
+  this.regexp.fast_slash = path === '/' && opts.end === false
+}
+
+Layer.prototype = {
+  constructor: Layer,
+
 
   match(path, method) {
     let match = undefined;
@@ -92,7 +95,7 @@ class Layer {
 
     return true;
   }
+
 }
 
-
-export default Layer;
+module.exports = Layer;

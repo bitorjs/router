@@ -1,5 +1,5 @@
-import methods from 'methods';
-import Layer from './layer';
+const methods = require('methods')
+const Layer = require('./layer');
 
 var slice = Array.prototype.slice;
 var toString = Object.prototype.toString;
@@ -27,16 +27,18 @@ function pathWeigth(path) {
   return ret;
 }
 
-class Router {
+function Router() {
+  this.stack = [];
+  this.methods = {};
 
-  constructor() {
-    this.stack = [];
-    this.methods = {};
+  this.supportMethods()
+  this.normalize()
+  this.registerMethod()
+}
 
-    this.supportMethods()
-    this.normalize()
-    this.registerMethod()
-  }
+Router.prototype = {
+  constructor: Router,
+
 
   supportMethods() {
     this.methods = {
@@ -47,7 +49,7 @@ class Router {
       head: "HEAD",
       patch: "PATCH"
     }
-  }
+  },
 
   normalize() {
 
@@ -63,7 +65,7 @@ class Router {
       value = value.toUpperCase();
       this.methods[key] = value;
     }
-  }
+  },
 
   registerMethod() {
     let methods = Object.keys(this.methods);
@@ -73,7 +75,7 @@ class Router {
         router.register(method, path, opts, fn)
       }
     });
-  }
+  },
 
   register(path, opts, fn) {
     opts = opts || {};
@@ -118,7 +120,7 @@ class Router {
 
 
     return this;
-  }
+  },
 
   match(path, method = 'GET') {
     let matched = [];
@@ -133,4 +135,4 @@ class Router {
   }
 }
 
-export default Router;
+module.exports = Router;

@@ -1,6 +1,6 @@
 {
-  "name": "bitorjs-router",
-  "version": "1.0.2",
+  "name": "@bitores/router",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
